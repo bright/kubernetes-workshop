@@ -1,0 +1,12 @@
+services:
+  echo-server:
+    image: jmalloc/echo-server
+    environment:
+      PORT: 8123
+    ports:
+      - "8200:8123"
+  curl:
+    image: curlimages/curl
+    entrypoint: sh -c
+    command:
+      - "while true; do curl echo-server:8123; sleep 3; done"

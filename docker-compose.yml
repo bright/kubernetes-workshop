@@ -1,0 +1,4 @@
+services:
+  echo-server:
+    image:
+  curl:

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-example-service
+spec:
+  selector:
+    app: my-example-pod-label # pod label
+  ports:
+    - port: 80 # port exposed by service (available for other applications)
+      targetPort: myExamplePort # pod port
+

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-example-deployment-name
+  labels:
+    app: my-example-deployment-label
+spec:
+  replicas: 2 # how many copies of my pod do I want
+  strategy: # DeploymentStrategy describes how to replace existing pods with new ones
+    rollingUpdate:
+      maxSurge: 1 # when rolling update, you can deploy +1 pod (total 3)
+      maxUnavailable: 1 # you can delete 1 pod to make space for new one
+  selector:
+    matchLabels:
+      app: my-example-pod-label # find pod with this label and supervise it
+  template: # pod definition below
+    metadata:
+      name: my-example-pod-name
+      labels:
+        app: my-example-pod-label
+    spec:
+      containers:
+        - name: my-example-container-name
+          image: jmalloc/echo-server
+          ports:
+            - containerPort: 8080
+              name: my-example-port
+          env:
+            - name: ENVIRONMENT
+              value: "prod"
+            - name: ENV_FROM_CONFIG_MAP
+              valueFrom:
+                configMapKeyRef:
+                  key: evnDefinedInTheConfigMap
+                  name: existing-config-map-name
+          volumeMounts:
+            - mountPath: "/myApplicationWillLookForConfigHere"
+              name: my-example-volume
+      volumes:
+        - name: my-example-volume
+          configMap:
+            name: existing-config-map-name
+            items:
+              - key: exampleKey.properties
+                path: application.properties
+      

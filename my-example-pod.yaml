@@ -1,0 +1,54 @@
+# https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-example-pod-name
+  labels:
+    app: my-example-pod-label # IMPORTANT VALUE - this is used by other objects to select (selector) this pod
+spec:
+  containers:
+    - name: my-example-container-name
+      image: jmalloc/echo-server
+      ports:
+        - containerPort: 8080 # purely informative like EXPOSE in dockerfile.yaml
+          name: my-example-port # this can be referenced in other objects
+      env:
+        - name: ENVIRONMENT
+          value: "prod"
+        - name: ENV_FROM_CONFIG_MAP
+          valueFrom:
+            configMapKeyRef:
+              key: evnDefinedInTheConfigMap
+              name: existing-config-map-name
+      resources:
+        requests: # this will be reserved on the node at start. K8s will choose different node if unavailable
+          memory: "64Mi" #64MB
+          cpu: "250m" # 1/4 core
+        limits: # maximum resources available for our app. It will be killed if it goes above these values and should detect them
+          memory: "256Mi"
+          cpu: "500m"
+      livenessProbe: # kill if fails
+        httpGet:
+          path: /actuator/health
+          port: 8080
+        initialDelaySeconds: 5
+        successThreshold: 1
+        failureThreshold: 5
+      readinessProbe: # allow traffic when successful
+        exec:
+          command:
+            - cat
+            - /tmp/healthy
+        periodSeconds: 5
+      volumeMounts:
+        - mountPath: "/myApplicationWillLookForConfigHere" # where should the volume be mounted
+          name: my-example-volume
+  volumes:
+    - name: my-example-volume
+      configMap: #volumeType
+        name: existing-config-map-name
+        items: # files that will be available
+          - key: exampleKey.properties # under this key we have our file content
+            path: application.properties # file where the file content will be saved
+

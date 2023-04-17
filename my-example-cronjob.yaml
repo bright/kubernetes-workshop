@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: my-example-cronjob
+spec:
+           # ┌───────────── minute (0 - 59)
+           # │ ┌───────────── hour (0 - 23)
+           # │ │ ┌───────────── day of the month (1 - 31)
+           # │ │ │ ┌───────────── month (1 - 12)
+           # │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+           # │ │ │ │ │                                   7 is also Sunday on some systems)
+           # │ │ │ │ │                                   OR sun, mon, tue, wed, thu, fri, sat
+           # │ │ │ │ │
+           # * * * * *
+  schedule: "* * * * *" #	Run every minute
+# schedule: "0 * * * *" #	Run every hour at **:00
+# schedule: "*/5 * * * *" #	Run every 5 minutes
+  jobTemplate:
+    spec: # job spec
+      ttlSecondsAfterFinished: 120 # remove finished jobs after 120 seconds (you have 120 seconds to see logs etc)
+      activeDeadlineSeconds: 60 # timeout for a job to complete
+      backoffLimit: 2 # number of retries in case of failure
+      template:
+        spec: # pod spec
+          containers:
+            - name: cronjob-container
+              image: busybox:latest
+              command:
+                - /bin/sh
+                - -c
+                - date; echo Hello!
+          restartPolicy: Never # important because we control restarting from Job (pod should fail so that Job can restart it and count failures)

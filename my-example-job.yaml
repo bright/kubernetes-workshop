@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: my-example-job
+spec:
+  ttlSecondsAfterFinished: 120 # remove finished jobs after 120 seconds (you have 120 seconds to see logs etc)
+  activeDeadlineSeconds: 60 # timeout for a job to complete
+  backoffLimit: 2 # number of retries in case of failure
+  template:
+    spec: # pod spec
+      containers:
+        - name: job-container
+          image: busybox:latest
+          command:
+            - /bin/sh
+            - -c
+            - date; echo Hello!
+      restartPolicy: Never # important because we control restarting from Job (pod should fail so that Job can restart it and count failures)

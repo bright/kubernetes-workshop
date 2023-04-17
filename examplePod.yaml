@@ -1,0 +1,46 @@
+# https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: MyExamplePod
+spec:
+  containers:
+    - name: MyExampleContainer
+      image: jmalloc/echo-server
+
+
+
+
+#apiVersion: v1
+#kind: Pod
+#metadata:
+#  name: MyExamplePod
+#  labels:
+#    app: MyExamplePod # IMPORTANT VALUE - this is used by other objects to select (selector) this pod
+#spec:
+#  containers:
+#    - name: MyExampleContainer
+#      image: jmalloc/echo-server
+#      imagePullPolicy: IfNotPresent
+#      ports:
+#        - containerPort: 8080 # purely informative like EXPOSE in dockerfile.yaml
+#          name: myExamplePort # this can be referenced in other objects
+#      env:
+#        - name: ENVIRONMENT
+#          value: "prod"
+#      volumeMounts:
+#        - mountPath: "/myApplicationWillLookForConfigHere" # where should the volume be mounted
+#          name: MyExampleVolume
+#  restartPolicy: Always
+#  volumes:
+#    - name: MyExampleVolume
+#      configMap: #volumeType
+#        name: ExistingConfigMapName
+#        items: # files that will be available
+#          - key: keyDefinedInTheConfigMap # under this key we have our file content
+#            path: application.properties # file where the file content will be saved
+#
+
+
+

@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: curl-cronjob
+spec:
+  schedule: "* * * * *" #	Run every minute
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 120
+      activeDeadlineSeconds: 60
+      backoffLimit: 2
+      template:
+        spec:
+          containers:
+            - name: curl-container
+              image: curlimages/curl:latest
+              imagePullPolicy: IfNotPresent
+              command:
+                - curl
+                - webserver-service:80
+          restartPolicy: Never
+
+

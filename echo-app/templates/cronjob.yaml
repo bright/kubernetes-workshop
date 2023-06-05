@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Values.echoApp.name }}-cronjob
+spec:
+  schedule: "{{ .Values.curlCronjob.schedule }}"
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 120
+      activeDeadlineSeconds: 60
+      backoffLimit: 2
+      template:
+        spec:
+          containers:
+            - name: curl-container
+              image: curlimages/curl:latest
+              imagePullPolicy: IfNotPresent
+              command:
+                - curl
+                - {{ .Values.echoApp.name }}-service:{{ .Values.echoApp.service.port }}
+          restartPolicy: {{ .Values.curlCronjob.restartPolicy }}
+
+

@@ -6,7 +6,7 @@ services:
     ports:
       - "8200:8123"
   curl:
-    image: curlimages/curl
+    image: curlimages/curl:8.1.1
     entrypoint: sh -c
     command:
       - "while true; do curl echo-server:8123; sleep 3; done"

@@ -4,7 +4,7 @@ metadata:
   name: webserver-service
 spec:
   selector:
-    app: webserver
+    app: webserver-pod
   ports:
     - port: 80
       targetPort: echo-port

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: webserver
   labels:
-    app: webserver
+    app: webserver-deployment
 spec:
   replicas: 1
   selector:
@@ -13,7 +13,7 @@ spec:
     metadata:
       name: webserver
       labels:
-        app: webserver
+        app: webserver-pod
     spec:
       containers:
         - name: echo-server

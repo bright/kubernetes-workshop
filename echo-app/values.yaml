@@ -29,8 +29,7 @@ curlCronjob:
   schedule: "* * * * *"
   image:
     repository: curlimages/curl
-    tag: latest
-  command: [ "curl", "-s", "http://echo-app:80" ]
+    tag: 8.1.1
   restartPolicy: Never
   ttlSecondsAfterFinished: 120
   activeDeadlineSeconds: 60

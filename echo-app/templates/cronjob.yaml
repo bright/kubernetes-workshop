@@ -6,14 +6,14 @@ spec:
   schedule: "{{ .Values.curlCronjob.schedule }}"
   jobTemplate:
     spec:
-      ttlSecondsAfterFinished: 120
-      activeDeadlineSeconds: 60
-      backoffLimit: 2
+      ttlSecondsAfterFinished: {{ .Values.curlCronjob.ttlSecondsAfterFinished }}
+      activeDeadlineSeconds: {{ .Values.curlCronjob.activeDeadlineSeconds }}
+      backoffLimit: {{ .Values.curlCronjob.backoffLimit }}
       template:
         spec:
           containers:
             - name: curl-container
-              image: curlimages/curl:latest
+              image: {{ .Values.curlCronjob.image.repository }}:{{ .Values.curlCronjob.image.tag }}
               imagePullPolicy: IfNotPresent
               command:
                 - curl

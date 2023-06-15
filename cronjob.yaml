@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
             - name: curl-container
-              image: curlimages/curl:latest
+              image: curlimages/curl:8.1.1
               imagePullPolicy: IfNotPresent
               command:
                 - curl

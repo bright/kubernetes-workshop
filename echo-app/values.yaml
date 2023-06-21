@@ -34,3 +34,11 @@ curlCronjob:
   ttlSecondsAfterFinished: 120
   activeDeadlineSeconds: 60
   backoffLimit: 2
+
+postgresql:
+  nameOverride: "Postgres1"
+  architecture: standalone
+
+postgres2:
+  nameOverride: "Postgres2"
+  architecture: standalone

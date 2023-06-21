@@ -1,0 +1,14 @@
+ingress:
+  enabled: true
+  annotations:
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  className: alb
+  hosts:
+    - kubernetes-dashboard.k8s-training.brightinventions.pl
+
+protocolHttp: true
+extraArgs:
+  - --enable-skip-login
+  - --enable-insecure-login
+  - --system-banner="Welcome to Bright Kubernetes"

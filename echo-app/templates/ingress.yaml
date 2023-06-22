@@ -1,16 +1,16 @@
-{{- if .Values.echoApp.ingress.enabled -}}
+{{- if .Values.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.echoApp.name }}-ingress
-  {{- with .Values.echoApp.ingress.annotations }}
+  name: {{ include "echo-app.name" . }}-ingress
+  {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  ingressClassName: {{ .Values.echoApp.ingress.className}}
+  ingressClassName: {{ .Values.ingress.className}}
   rules:
-    {{- range .Values.echoApp.ingress.hosts }}
+    {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -19,9 +19,9 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ $.Values.echoApp.name }}-service
+                name: {{ include "echo-app.name" $ }}-service
                 port:
-                  number: {{ $.Values.echoApp.service.port }}
+                  number: {{ $.Values.service.port }}
       {{- end }}
   {{- end }}
 {{- end }}

@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Values.echoApp.name }}-cronjob
+  name: {{ include "echo-app.name" . }}-cronjob
 spec:
-  schedule: "{{ .Values.curlCronjob.schedule }}"
+  schedule: {{ .Values.curlCronjob.schedule | quote }}
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: {{ .Values.curlCronjob.ttlSecondsAfterFinished }}
@@ -17,7 +17,7 @@ spec:
               imagePullPolicy: IfNotPresent
               command:
                 - curl
-                - {{ .Values.echoApp.name }}-service:{{ .Values.echoApp.service.port }}
+                - {{ include "echo-app.name" . }}-service:{{ .Values.service.port }}
           restartPolicy: {{ .Values.curlCronjob.restartPolicy }}
 
 

@@ -1,29 +1,27 @@
-echoApp:
-  name: webserver
-  replicaCount: 1
-  image:
-    containerName: echo-server
-    repository: jmalloc/echo-server
-    tag: latest
-  port: 8123
-  portName: echo-port
+replicaCount: 1
+image:
+  containerName: echo-server
+  repository: jmalloc/echo-server
+  tag: latest
+port: 8123
+portName: echo-port
 
-  service:
-    type: ClusterIP
-    port: 80
+service:
+  type: ClusterIP
+  port: 80
 
-  ingress:
-    enabled: true
-    className: alb
-    annotations: {
-      alb.ingress.kubernetes.io/target-type: ip,
-      alb.ingress.kubernetes.io/scheme: internet-facing
-    }
-    hosts:
-      - host: jacek-echo-app.k8s-training.brightinventions.pl
-        paths:
-          - path: /
-            pathType: Prefix
+ingress:
+  enabled: true
+  className: alb
+  annotations: {
+    alb.ingress.kubernetes.io/target-type: ip,
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  }
+  hosts:
+    - host: jacek-echo-app.k8s-training.brightinventions.pl
+      paths:
+        - path: /
+          pathType: Prefix
 
 curlCronjob:
   schedule: "* * * * *"
